@@ -2,21 +2,21 @@
 
 A weather script that displays some weather information.
 
-It shows icons, temperatures and text for the current weather. The script can be easily modified to display a forecast. Look at the commented out line.
+It shows icons, temperatures and text for the current weather.
 
 ![openweathermap-detailed](screenshots/1.png)
 
 
 ## Dependencies
 
-* [OpenWeatherMap-Key](https://openweathermap.org/appid)
-* [weather-icons](https://github.com/erikflowers/weather-icons)
+* [OpenWeatherMap Key](https://openweathermap.org/appid)
+* [weather-icons](https://github.com/erikflowers/weather-icons) or [Font Awesome 5 Pro](https://fontawesome.com/changelog/latest)
 * `jq`
 
 
 ## Configuration
 
-If `CITY` is left empty, the location is retrieved via the Mozilla Location API. An ID must be specified here. For example ID of Berlin is `2950159`.
+If `CITY` is left empty, the location is retrieved via the Mozilla Location API. `CITY` can either be a city ID (e.g. ID of Berlin is `2950159`), city name (e.g. `Berlin`) or city name + country code (e.g. `Berlin,DE`).
 
 Change these values:
 
