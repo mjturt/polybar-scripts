@@ -1,23 +1,22 @@
 #!/usr/bin/env bash
 
-VIRTUALENV="$HOME/.virtualenvs/agenda"
-VIRTUALENV_ACTIVATE="$VIRTUALENV/bin/activate"
-GOOGLE_CREDENTIALS="$HOME/.gcredentials/credentials.json"
+# Pyenv init
+if command -v pyenv 1> /dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+eval "$(pyenv virtualenv-init -)"
+
+GOOGLE_CREDENTIALS="$HOME/.gcredentials/agenda.json"
 DIR=$(dirname "$0")
 
 if [[ "$1" == "--install" ]]; then
-    if [[ ! -d "$VIRTUALENV" ]]; then
-        virtualenv "$VIRTUALENV"
-        source "$VIRTUALENV_ACTIVATE"
-        pip install python-bidi google-api-python-client google-auth-httplib2 google-auth-oauthlib
-        python3 "$DIR"/i3_agenda/__init__.py -c "$GOOGLE_CREDENTIALS"
-    else
-        echo "Virtualenv alredy exists"
-        exit 1
-    fi
+  pyenv virtualenv 3.8.0 agenda
+  pyenv activate agenda
+  pip install python-bidi google-api-python-client google-auth-httplib2 google-auth-oauthlib
+  python "$DIR"/i3_agenda/__init__.py -c "$GOOGLE_CREDENTIALS"
 elif [[ "$1" == "--click" ]]; then
-    "$BROWSER" "https://calendar.google.com/calendar/r/week"
+  "$BROWSER" "https://calendar.google.com/"
 else
-    source "$VIRTUALENV_ACTIVATE"
-    python3 "$DIR"/i3_agenda/__init__.py -c "$GOOGLE_CREDENTIALS"
+  pyenv activate agenda
+  python "$DIR"/i3_agenda/__init__.py -c "$GOOGLE_CREDENTIALS" -ttl 10
 fi

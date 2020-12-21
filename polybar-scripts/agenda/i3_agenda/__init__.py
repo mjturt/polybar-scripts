@@ -21,7 +21,7 @@ DEFAULT_CAL_WEBPAGE = 'https://calendar.google.com/calendar/r/day'
 
 button = os.getenv("BLOCK_BUTTON", "") # i3blocks use this envvar to check the click
 
-allowed_calendars_ids = [] # populate with the Google Calendar IDs you are interested in
+allowed_calendars_ids = ['maks.turtiainen@gmail.com', 'asteriskiry@gmail.com', 'maks.turtiainen@lvsbrokers.com', 'bd1f2akrrmkj6tpp2irc116rck@group.calendar.google.com', 'airje31klgiuisbmb6hcmcb38c@group.calendar.google.com', '9qumrmjmm413s95k4sa2gqi0q8gctlnk@import.calendar.google.com'] # populate with the Google Calendar IDs you are interested in
 
 parser = argparse.ArgumentParser(description='Show next Google Calendar event')
 parser.add_argument('--credentials', '-c', type=str,
@@ -59,7 +59,10 @@ def main():
     closest = get_closest(events)
         
     t = datetime.datetime.fromtimestamp(closest[0])
-    print(f"{t:%H:%M} " + get_display(closest[1]) )
+    day = t.strftime("%A")
+    day = day[:3]
+    time = t.strftime("%H:%M")
+    print(day + " " + time + " " + get_display(closest[1]) )
 
 def getEvents(service):
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
@@ -87,7 +90,10 @@ def getEvents(service):
             end_time = get_event_time(event['end'].get('dateTime', event['end'].get('date')))
             start_time = event['start'].get('dateTime', event['start'].get('date'))
             unix_time = get_event_time(start_time)
-            all.append(Event(event['summary'], start_time, unix_time, end_time))
+            if 'summary' in event.keys():
+                all.append(Event(event['summary'], start_time, unix_time, end_time))
+            else:
+                all.append(Event('LVS', start_time, unix_time, end_time))
 
     return all
 
